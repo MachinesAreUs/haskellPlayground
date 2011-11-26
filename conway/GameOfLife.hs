@@ -1,4 +1,4 @@
-﻿module GameOfLife
+﻿module Conway.GameOfLife
 ( newUniverse,
   evolve,
 ) where
@@ -25,7 +25,7 @@ evolveRow universe idx =
 	    newRow = map evolveCell $ allNeighborhoods4CellsInRow prev row next
 	in Universe { width = width universe,
 	              height = height universe, 
-                  rows = allPrev ++ newRow:allNext }
+	              rows = allPrev ++ newRow:allNext }
 
 allNeighborhoods4CellsInRow :: [Cell] -> [Cell] -> [Cell] -> [[[Cell]]]
 allNeighborhoods4CellsInRow prevRow row nextRow =
@@ -36,7 +36,7 @@ allNeighborhoods4CellsInRow prevRow row nextRow =
 
 evolveCell :: [[Cell]] -> Cell
 evolveCell neighborhood@(_:(_:cell:_:[]):_:[]) 
-	| cell == 1 && (livingNeighbors == 2 || livingNeighbors == 3) = 1
+	| cell == 1 && livingNeighbors `elem` [2,3] = 1
 	| cell == 0 && livingNeighbors == 3 = 1
 	| otherwise = 0
 	where livingNeighbors = (sum . concat $ neighborhood ) - cell
