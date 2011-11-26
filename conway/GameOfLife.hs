@@ -1,7 +1,6 @@
 ﻿module GameOfLife
-(
-newUniverse,
-evolve,
+( newUniverse,
+  evolve,
 ) where
 
 import Data.List
@@ -23,13 +22,13 @@ evolveRow universe idx =
 	    next = if idx == (height universe - 1) then head cells else cells !! (idx + 1)
 	    allPrev = fst . splitAt idx $ cells
 	    allNext = tail . snd . splitAt idx $ cells
-	    newRow = map evolveCell $ neighborhoods4Row prev row next
-	in Universe { width = width universe, 
+	    newRow = map evolveCell $ allNeighborhoods4CellsInRow prev row next
+	in Universe { width = width universe,
 	              height = height universe, 
                   rows = allPrev ++ newRow:allNext }
 
-neighborhoods4Row :: [Cell] -> [Cell] -> [Cell] -> [[[Cell]]]
-neighborhoods4Row prevRow row nextRow =
+allNeighborhoods4CellsInRow :: [Cell] -> [Cell] -> [Cell] -> [[[Cell]]]
+allNeighborhoods4CellsInRow prevRow row nextRow =
 	let columns = zipWith3 (\x y z -> [x,y,z]) prevRow row nextRow
 	    nextNeighborhood = (\idx ->  transpose . take 3 . drop idx . cycle $ columns) 
 	    unordered = map nextNeighborhood [0..(length columns - 1)]
