@@ -1,10 +1,16 @@
-﻿import Data.List
+﻿module GameOfLife
+(
+newUniverse,
+evolve,
+) where
+
+import Data.List
 
 type Cell = Int 
 data Universe = Universe { width :: Int, 
                            height :: Int,
                            rows :: [[Cell]]
-						 } deriving (Show)
+                         } deriving (Show)
 
 evolve :: Universe -> Universe
 evolve universe = foldl evolveRow universe [0..(height universe - 1)]
