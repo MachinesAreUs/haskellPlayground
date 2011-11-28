@@ -36,14 +36,15 @@ neighborhoods4CellsInRow prevRow row nextRow =
 	in last unordered : init unordered 
 
 evolveCell :: [[Cell]] -> Cell
-evolveCell neighborhood@((_:_:_:[]):(_:cell:_:[]):(_:_:_:[])) 
+--evolveCell neighborhood@((_:_:_:[]):(_:cell:_:[]):(_:_:_:[])) 
+evolveCell neighborhood@(_:(_:cell:_:[]):_:[]) 
 	| cell == X && livingNeighbors `elem` [2,3] = X
 	| cell == O && livingNeighbors == 3 = X
 	| otherwise = O
 	where livingNeighbors = (sum . map toInt . concat $ neighborhood ) - (toInt cell)
 
 newUniverse :: [[Cell]] -> Universe	
-newUniverse rows@(r1:r2:r3)
+newUniverse rows@(r1:r2:r3:[])
 	| length r1 >= 3 && allRowsSameSize 
 		= Universe {width = length r1, height = length rows, rows = rows }
 	| otherwise = error "Every row must have the same number of columns, with n >= 3"
