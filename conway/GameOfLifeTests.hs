@@ -4,16 +4,6 @@ where
 import GameOfLife
 import Test.QuickCheck
 
--- Temp
-
-data Board = Board [[Cell]] deriving (Show)
-
-instance Arbitrary Board where
-	arbitrary = resize 3 arbitrary
-
-prop_notNull (Board xs) =
-	not ( null xs )
-
 -- Generators		
 
 instance Arbitrary Cell where
