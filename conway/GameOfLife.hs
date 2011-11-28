@@ -44,7 +44,7 @@ evolveCell neighborhood@(_:(_:cell:_:[]):_:[])
 	where livingNeighbors = (sum . map toInt . concat $ neighborhood ) - (toInt cell)
 
 newUniverse :: [[Cell]] -> Universe	
-newUniverse rows@(r1:r2:r3:[])
+newUniverse rows@(r1:r2:r3:_)
 	| length r1 >= 3 && allRowsSameSize 
 		= Universe {width = length r1, height = length rows, rows = rows }
 	| otherwise = error "Every row must have the same number of columns, with n >= 3"
