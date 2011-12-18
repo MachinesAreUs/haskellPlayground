@@ -1,4 +1,7 @@
-﻿import Data.Char 
+﻿module stringcalculator ( 
+ add, add2, add3, add4
+) where
+
 import Data.String.Utils
 
 -- Problem 1: Be abel to add integers given in a string, separated by commas.
@@ -56,11 +59,8 @@ addStringOfInts delim xs
 	| length negatives == 1 = error "One negative!"
 	| length negatives > 1  = Left negatives
 	| otherwise = Right $ foldr (+) 0 listOfInts 
-		where listOfInts = intsFromString delim xs
+		where listOfInts = map toInt . wordz delim $ xs
 		      negatives = filter (<0) listOfInts
-
-intsFromString delim xs =
-	map toInt . wordz delim $ xs
 
 -- Problem 5. It should ignore all numbers greater than 1000
 -- Pending...
