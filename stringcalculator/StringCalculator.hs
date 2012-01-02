@@ -1,5 +1,5 @@
-﻿module stringcalculator ( 
- add, add2, add3, add4
+﻿module StringCalculator ( 
+ add, add2, add3, add4, add5
 ) where
 
 import Data.String.Utils
@@ -65,8 +65,21 @@ addStringOfInts delim xs
 -- Problem 5. It should ignore all numbers greater than 1000
 -- Pending...
 
+add5::[Char] -> Either [Int] Int
+add5 ('/':'/':delim:'\n':xs) = 
+	addStringOfInts' [delim] xs
+add5 xs = 
+	addStringOfInts' "," xs
+	
+addStringOfInts' delim xs 
+	| length negatives == 1 = error "One negative!"
+	| length negatives > 1  = Left negatives
+	| otherwise = Right $ foldr (+) 0 ( filter (<= 1000) listOfInts )
+		where listOfInts = map toInt . wordz delim $ xs
+		      negatives = filter (<0) listOfInts
+			  
 -- Problem 6. It should support delimiters of any length
--- Pending...
+-- Pending
 
 -- Problem 7. It should support multiple delimiters of the same length.
 -- When given multiple delimiters, they should be of the form
