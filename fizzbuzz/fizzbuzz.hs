@@ -7,4 +7,4 @@ fizzbuzz x
   | otherwise = show x 
 
 fizzbuzz100 =  
-  mapM_ putStrLn  [ fizzbuzz x | x <- [1..100] ]
+  mapM_ putStrLn [ fizzbuzz x | x <- [1..100] ]
