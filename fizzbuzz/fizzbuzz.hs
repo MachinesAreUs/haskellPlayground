@@ -1,6 +1,5 @@
 ﻿import Data.Char
 
-# Comentario de ejemplo
 fizzbuzz x 
   | x `mod` 3 == 0 && x `mod` 5 == 0 = "fizzbuzz"
   | x `mod` 3 == 0 = "fizz"
