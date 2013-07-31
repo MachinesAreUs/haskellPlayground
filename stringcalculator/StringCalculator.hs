@@ -3,8 +3,10 @@
 ) where
 
 import Data.String.Utils
+import Data.Maybe
+import Text.Regex
 
--- Problem 1: Be abel to add integers given in a string, separated by commas.
+-- Problem 1: Be able to add integers given in a string, separated by commas.
 -- Just the following cases:
 -- "a"     -> n
 -- "a,b"   -> n+m
@@ -16,13 +18,21 @@ add (x1:',':x2:[]) = (toInt [x1]) + (toInt [x2])
 add (x1:',':x2:',':x3:[]) = (toInt [x1]) + (toInt [x2]) + (toInt [x3])
 
 toInt:: [Char] -> Int
-toInt x = (read x) :: Int
+toInt xs
+	| isJust (cumpleRegex xs) = (read xs) :: Int
+	| otherwise = error $ xs ++ " is not an integer"
+	where intRegex = mkRegex "^[0-9]+$"
+	      cumpleRegex = matchRegex intRegex
+
+addx:: [Char] -> Int
+addx xs = foldl1 (+) $ map toInt $ split "," xs
+
 
 -- Problem 2: Allow an undefined number of integers.
 -- Examples: 
 -- "1,2,3,4,5"       -> 15
 -- "10,20,30,40,50"  -> 150
--- "3,3,3,3,3,3,3,3" -> 8
+-- "3,3,3,3,3,3,3,3" -> 24
 
 add2::[Char] -> Int
 add2 xs =
@@ -47,7 +57,7 @@ wordz delim xs =
   
 -- Problem 4: It should reject negative numbers.
 -- When given one negative number within the list of integers. It should throw an error.
--- When given +1 negative numbers, it should return the list of all given negative numbers.
+-- When given >1 negative numbers, it should return the list of all given negative numbers.
   
 add4::[Char] -> Either [Int] Int
 add4 ('/':'/':delim:'\n':xs) = 
@@ -63,7 +73,6 @@ addStringOfInts delim xs
 		      negatives = filter (<0) listOfInts
 
 -- Problem 5. It should ignore all numbers greater than 1000
--- Pending...
 
 add5::[Char] -> Either [Int] Int
 add5 ('/':'/':delim:'\n':xs) = 
@@ -74,8 +83,9 @@ add5 xs =
 addStringOfInts' delim xs 
 	| length negatives == 1 = error "One negative!"
 	| length negatives > 1  = Left negatives
-	| otherwise = Right $ foldr (+) 0 ( filter (<= 1000) listOfInts )
+	| otherwise = Right $ foldr (+) 0 listOfIntsLt1001
 		where listOfInts = map toInt . wordz delim $ xs
+		      listOfIntsLt1001 = filter (<1001) listOfInts
 		      negatives = filter (<0) listOfInts
 			  
 -- Problem 6. It should support delimiters of any length
