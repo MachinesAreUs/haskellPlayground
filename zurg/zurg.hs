@@ -6,18 +6,14 @@ data Toy = Buzz | Woody | Rex | Hamm deriving (Eq, Ord, Show)
 type Movement = (Toy, Toy)
 type Solution = [Movement]
 
-times = 
-  Map.fromList [
-    (Buzz,  5 ),
-    (Woody, 10),
-    (Rex,   20),
-    (Hamm,  25)]
-
 time :: Toy -> Int
-time toy = fromJust $ Map.lookup toy times
+time Buzz  = 5
+time Woody = 10
+time Rex   = 20
+time Hamm  = 25
 
 timeForward :: Movement -> Int
-timeForward m = (max (time (fst m)) (time (snd m)))
+timeForward m = max (time (fst m)) (time (snd m))
 
 timeBackward :: Movement -> Int
 timeBackward m = time (fst m) 
