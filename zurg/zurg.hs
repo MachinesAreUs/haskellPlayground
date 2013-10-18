@@ -37,6 +37,8 @@ appendToSolutions sols mov = map (\sol -> sol ++ [mov] ) sols
 
 solutions :: [Toy] -> [Solution] -> [Solution]
 solutions toys@(x:y:[]) sols = appendToSolutions sols (x,y)
-solutions toys          sols = concat $ map (\mov -> solutions (delete (snd mov) toys) (appendToSolutions sols mov)) $ choices toys
+solutions toys          sols = concat $ map (completeSolutions sols)  $ choices toys
+  where completeSolutions sols = (\mov -> solutions (delete (snd mov) toys) (appendToSolutions sols mov))
 
-zurg = minimumBy (\x y -> compare (snd x) (snd y)) $ map (\s -> (s, timing s)) $ solutions [Buzz, Woody, Rex, Hamm] []
+zurg = fastest $ map (\s -> (s, timing s)) $ solutions [Buzz, Woody, Rex, Hamm] []
+  where fastest = minimumBy (\x y -> compare (snd x) (snd y))
