@@ -19,7 +19,7 @@ appendToSolutions []   mov = [[mov]]
 appendToSolutions sols mov = map (\sol -> sol ++ [mov] ) sols
 
 tour :: Int -> Position -> [Solution] 
-tour n from = tour' n from [[from]]
+tour n from                   = tour' n from [[from]]
   where tour' n from sols     = filter (\s -> length s == n*n) $ concat $ solutions n from sols
         solutions n from sols = parMap rpar (completeSols sols) $ possibleMovs n from 
         completeSols sols     = \m -> if (isNewPosition m sols ) 
