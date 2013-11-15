@@ -1,4 +1,3 @@
-
 Knight's Tour
 =============
 
@@ -11,6 +10,6 @@ Compile with
 
 Run with
 
-    ./KnightsTourRun -N4
+    ./KnightsTourSpec -N4
 
 You can change de 4 by the number of processes you want (min 1, but not recomended).
