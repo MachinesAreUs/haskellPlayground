@@ -1,4 +1,3 @@
-
 Knight's Tour
 =============
 
@@ -7,10 +6,10 @@ My first try at solving [this problem](http://en.wikipedia.org/wiki/Knight's_tou
 
 Compile with
 
-    ghc -O2 KnightsTourSpec.hs -RTS -threaded
+    ghc -O2 KnightsTourSpec.hs -rtsopts -threaded
 
 Run with
 
-    ./KnightsTourRun -N4
+    ./KnightsTourSpec +RTS -N4
 
 You can change de 4 by the number of processes you want (min 1, but not recomended).
