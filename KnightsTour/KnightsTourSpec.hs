@@ -9,8 +9,8 @@ import KnightsTour
 
 emitByPair :: (a -> a -> c) -> [a] -> [c]
 emitByPair f []         = []
-emitByPair f (x:y:z:[]) = f x y : f y z : []
-emitByPair f (x:y:[])   = f x y : []
+emitByPair f (x:y:z:[]) = [ f x y , f y z ]
+emitByPair f (x:y:[])   = [ f x y ]
 emitByPair f (x:y:xs)   = f x y : emitByPair f xs
 emitByPair f (x:[])     = undefined
 

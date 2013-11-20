@@ -1,6 +1,7 @@
 module KnightsTour where
 
 import Data.List
+import Data.Maybe
 import Control.Parallel.Strategies
 
 type Position = (Int,Int)
@@ -22,12 +23,11 @@ tours :: Int -> Position -> [Solution]
 tours n from                  = tours' n from [[from]]
   where tours' n from sols    = filter fullTour $ concat $ solutions n from sols
         solutions n from sols = parMap rpar (completeSols sols) $ possibleMovs n from 
-        completeSols sols     = \m -> if isNewPosition m sols
-                                      then tours' n m $ appendToSolutions sols m
-                                      else sols
-        fullTour              = \s -> length s == n*n     
-        isNewPosition p sols  = all (\sol -> elemIndex p sol == Nothing) sols
+        completeSols sols m   = if isNewPosition m sols
+                                then tours' n m $ appendToSolutions sols m
+                                else sols
+        fullTour s            = length s == n*n     
+        isNewPosition p       = all (isNothing . elemIndex p) 
 
-knightsTour n          = concat $ parMap rpar (tours n) allPositions
-  where allPositions   = [(r,c) | r <- [1..n], c <- [1..n]]
-
+knightsTour n         = concat $ parMap rpar (tours n) allPositions
+  where allPositions  = [(r,c) | r <- [1..n], c <- [1..n]]
