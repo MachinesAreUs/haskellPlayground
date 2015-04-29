@@ -12,7 +12,7 @@ isValidSolution s    = isValidInput && isValid
         isValidInput = s |> map isDigit |> and 
 
 isValidSolution_ :: Matrix -> Bool
-isValidSolution_ mtx        = map ($ mtx) [rowsValid, columnsValid, squaresValid] |> and
+isValidSolution_ mtx        = [rowsValid, columnsValid, squaresValid] |> map ($ mtx) |> and
   where rowsValid m         = m |> map isValidSequence |> and
         columnsValid m      = m |> transpose |> rowsValid 
         squaresValid m      = squares m |> map isValidSequence |> and
@@ -22,10 +22,10 @@ isValidSolution_ mtx        = map ($ mtx) [rowsValid, columnsValid, squaresValid
         canonical           = [1..9] 
 
 toMtx :: String -> Matrix
-toMtx s          = [[ elem row col | col <- [0..size-1]] | row <- [0..size-1]]
-  where chars    = filter (/=' ') s
+toMtx s          = [[ at row col | col <- [0..size-1]] | row <- [0..size-1]]
+  where chars    = s |> filter (/=' ')
         size     = chars |> length |> fromIntegral |> sqrt |> truncate
-        elem r c = chars |> drop (r * size + c) |> head |> digitToInt
+        at r c   = chars |> drop (r * size + c) |> head |> digitToInt
 
 at :: Matrix -> Int -> Int -> Int 
 at mtx r c = (mtx !! r) !! c 
@@ -34,4 +34,4 @@ main = do
   argv <- getArgs
   fileStr <- readFile $ head argv
   let samples = lines fileStr 
-  mapM (putStrLn . show . isValidSolution) samples 
+  mapM (print . isValidSolution) samples 
