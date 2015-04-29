@@ -10,8 +10,8 @@ TODO: Reference to the problem definition needed.
 ## Usage
 
 ```
-    $ ghc sudoku_solver.hs
-    $ ./sudoku_solver samples.txt
+    $ ghc sudoku_validator.hs
+    $ ./sudoku_validator samples.txt
     > True
     > False
     > True
