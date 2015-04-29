@@ -22,10 +22,10 @@ isValidSolution_ mtx        = map ($ mtx) [rowsValid, columnsValid, squaresValid
         canonical           = [1..9] 
 
 toMtx :: String -> Matrix
-toMtx s       = [[ elem row col | col <- [0..size-1]] | row <- [0..size-1]]
-  where chars = filter (/=' ') s
-        size  = truncate $ sqrt $ fromIntegral $ length chars
-        elem r c = digitToInt $ head $ drop (r * size + c) chars
+toMtx s          = [[ elem row col | col <- [0..size-1]] | row <- [0..size-1]]
+  where chars    = filter (/=' ') s
+        size     = chars |> length |> fromIntegral |> sqrt |> truncate
+        elem r c = chars |> drop (r * size + c) |> head |> digitToInt
 
 at :: Matrix -> Int -> Int -> Int 
 at mtx r c = (mtx !! r) !! c 
