@@ -1,5 +1,6 @@
 import Data.Maybe
 import Data.List
+import Data.Function
 import qualified Data.Map as Map  
 
 data Toy = Buzz | Woody | Rex | Hamm deriving (Eq, Ord, Show)
@@ -20,7 +21,7 @@ timeBackward m = time (fst m)
 
 timing :: Solution -> Int
 timing []     = 0
-timing (m:[]) = timeForward m
+timing [m]    = timeForward m
 timing (m:ms) = timeForward m + timeBackward m + timing ms
         
 choices :: [Toy] -> [Movement]
@@ -32,9 +33,12 @@ appendToSolutions []   mov = [[mov]]
 appendToSolutions sols mov = map (\sol -> sol ++ [mov] ) sols
 
 solutions :: [Toy] -> [Solution] -> [Solution]
-solutions toys@(x:y:[]) sols = appendToSolutions sols (x,y)
-solutions toys          sols = concat $ map (completeSolutions sols)  $ choices toys
-  where completeSolutions sols = (\mov -> solutions (delete (snd mov) toys) (appendToSolutions sols mov))
+solutions toys@[x,y] sols = appendToSolutions sols (x,y)
+solutions toys       sols = concatMap (completeSolutions sols) $ choices toys
+  where completeSolutions sols mov = solutions (delete (snd mov) toys) (appendToSolutions sols mov)
 
 zurg = fastest $ map (\s -> (s, timing s)) $ solutions [Buzz, Woody, Rex, Hamm] []
-  where fastest = minimumBy (\x y -> compare (snd x) (snd y))
+  where fastest = minimumBy (compare `on` snd)
+
+main = print zurg
+  

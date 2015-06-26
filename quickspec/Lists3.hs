@@ -4,8 +4,8 @@ import Test.QuickSpec hiding (lists)
 import Test.QuickCheck
 import Data.Typeable
 
-lists :: forall a. (Typeable a, Ord a, Arbitrary a, CoArbitrary a) =>
-         a -> [Sig]
+lists :: forall a. (Typeable a, Ord a, Arbitrary a, CoArbitrary a) => a -> [Sig]
+
 lists a = [
   prelude (undefined :: a) `without` ["++"],
   funs (undefined :: a),
