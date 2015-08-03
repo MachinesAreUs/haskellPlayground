@@ -21,11 +21,31 @@ toInt:: [Char] -> Int
 toInt xs
 	| isJust (cumpleRegex xs) = (read xs) :: Int
 	| otherwise = error $ xs ++ " is not an integer"
-	where intRegex = mkRegex "^[0-9]+$"
+	where intRegex = mkRegex "^[-]?[0-9]+$"
 	      cumpleRegex = matchRegex intRegex
 
 addx:: [Char] -> Int
 addx xs = foldl1 (+) $ map toInt $ split "," xs
+
+add3x:: [Char] -> Either Int [Int]
+add3x ('/':'/':delim:'\n':xs) = mkAdd3 [delim] xs
+add3x xs = mkAdd3 "," xs
+
+--mkAdd3 delimiter = foldl1 (+) . map toInt . (split delimiter)
+
+mkAdd3:: [Char] -> [Char] -> Either Int [Int]
+mkAdd3 delimiter xs
+    | length listOfNegatives == 0     = Left ( foldl1 (+) $ listOfInts xs )
+    | length listOfNegatives == 1     = error $ "error: " ++ show (head listOfNegatives)
+    | otherwise                       = Right listOfNegatives 
+	where listOfInts xy = map toInt . (split delimiter) $ xy
+	      listOfNegatives = filter (<0) (listOfInts xs)
+
+--add3x:: [Char] -> Int
+--add3x xs = case xs of
+--			('/':'/':delim:'\n':xs) -> mkAdd3 [delim] xs
+--			_                       -> mkAdd3 "," xs
+--	       where mkAdd3 delimiter = foldl1 (+) . map toInt . (split delimiter)
 
 
 -- Problem 2: Allow an undefined number of integers.
