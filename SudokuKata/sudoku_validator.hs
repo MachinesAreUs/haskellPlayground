@@ -30,8 +30,12 @@ toMtx s          = [[ at row col | col <- [0..size-1]] | row <- [0..size-1]]
 at :: Matrix -> Int -> Int -> Int 
 at mtx r c = (mtx !! r) !! c 
 
+print :: Matrix -> IO ()
+print m = m |> map toLine |> intersperse "\n" |> concat |> putStrLn
+  where toLine r = show r
+
 main = do
   argv <- getArgs
   fileStr <- readFile $ head argv
   let samples = lines fileStr 
-  mapM (print . isValidSolution) samples 
+  mapM (Prelude.print . isValidSolution) samples 
