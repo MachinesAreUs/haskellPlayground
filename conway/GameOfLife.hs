@@ -10,7 +10,12 @@ data Cell = O | X deriving (Eq, Show) -- O=Dead, X=Live
 data Universe = Universe { width :: Int, 
                            height :: Int,
                            rows :: [[Cell]]
-                         } deriving (Show)
+                         } -- deriving (Show)
+
+instance Show Universe where
+	show u = show $  map (\r -> show r ++ "\n") $ rows u
+
+showUniverse u = do mapM_ (putStrLn . show) $ rows u
 
 evolve :: Universe -> Universe
 evolve universe = foldl evolveRow universe [0..(height universe - 1)]
@@ -36,7 +41,6 @@ neighborhoods4CellsInRow prevRow row nextRow =
 	in last unordered : init unordered 
 
 evolveCell :: [[Cell]] -> Cell
---evolveCell neighborhood@((_:_:_:[]):(_:cell:_:[]):(_:_:_:[])) 
 evolveCell neighborhood@(_:(_:cell:_:[]):_:[]) 
 	| cell == X && livingNeighbors `elem` [2,3] = X
 	| cell == O && livingNeighbors == 3 = X
